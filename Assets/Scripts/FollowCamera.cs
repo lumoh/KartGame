@@ -9,10 +9,10 @@ public class FollowCamera : MonoBehaviour
     public float DistanceDamp;
     public Vector3 Velocity;
 
-	void LateUpdate() 
+	void FixedUpdate() 
     {
-        //followSmoothDamp();
-        simpleFollow();
+        followSmoothDamp();
+        //simpleFollow();
 	}
 
     void followSmoothDamp()

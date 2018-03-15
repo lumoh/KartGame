@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 5000
   AccelerationTime: 1
-  DecelerationTime: 3
+  DecelerationTime: 5
   ReverseSpeed: 2500
   TurnSpeed: 40
   GroundedDrag: 10

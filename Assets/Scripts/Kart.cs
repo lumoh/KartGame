@@ -19,11 +19,12 @@ public class Kart : MonoBehaviour
 
     private BoxCollider col;
     private Rigidbody body;
+
     private float thrust;
-    private float turnValue;
     private bool grounded;
     private bool isMoving;   
     private bool isMovingForward;
+
     private float vInput;
     private float hInput;
 
@@ -40,11 +41,24 @@ public class Kart : MonoBehaviour
         layerMask = ~layerMask;
     }
 
-    void calculateThrust()
+    void Update()
+    {        
+        input();
+    }
+
+    void FixedUpdate()
+    {
+        setDirection();
+        gravity();
+        movement();
+        turning();
+    }
+
+    void input()
     {
         vInput = Input.GetAxis("Vertical");
-        // input is either 1, -1, or 0
-        // (drive, reverse, neutral)
+        hInput = Input.GetAxis("Horizontal");
+
         if (vInput > 0)
         {
             vInput = 1;
@@ -89,43 +103,20 @@ public class Kart : MonoBehaviour
         {
             thrust = thrustRatio * ReverseSpeed;
         }
-
-        //Debug.Log(thrustRatio.ToString());
-        turnValue = Input.GetAxis("Horizontal");
-
-//        TODO JUMP
-//        if (Input.GetKeyDown(KeyCode.Space))
-//        {
-//            body.AddForce(transform.up * 150);
-//        }
-    }
-
-    void Update()
-    {
-        setDirection();
-        calculateThrust();
     }
 
     void setDirection()
     {
-        // if moving slow enough just stop
-//        if (body.velocity.magnitude < DeadZone)
-//        {
-//            body.velocity = Vector3.zero;
-//        }
-
         isMoving = body.velocity.magnitude > DeadZone;
         isMovingForward = Vector3.Dot(transform.forward, body.velocity) >= 0;
 
-        //Debug.Log(body.velocity.magnitude.ToString());
-        //Debug.Log(isMovingForward.ToString());
+        Debug.Log("Speed = " + body.velocity.magnitude.ToString());
     }
 
-    void FixedUpdate()
+    void gravity()
     {
         RaycastHit hit;
-        grounded = false;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit, HeightOffGround, layerMask))
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, HeightOffGround + 0.1f, layerMask))
         {
             grounded = true;
 
@@ -137,24 +128,30 @@ public class Kart : MonoBehaviour
             float newY = (hit.point + (hit.normal * HeightOffGround)).y;
             pos.y = newY;
             transform.position = pos;
-        }
-        else
-        {
-            body.AddForceAtPosition(transform.up * -GravityForce, transform.position);
-        }
-            
-        if (grounded)
-        {
+
             body.drag = GroundedDrag;
             body.angularDrag = GroundedAngularDrag;
         }
         else
         {
-            thrust = 0;
+            grounded = false;
+            body.AddForceAtPosition(transform.up * -GravityForce, transform.position);
+
             body.drag = AirDrag;
             body.angularDrag = AirAngularDrag;
         }
+    }
 
+    void turning()
+    {
+        if (hInput != 0)
+        {
+            body.AddRelativeTorque(Vector3.up * hInput * TurnSpeed * thrustRatio);
+        }
+    }
+
+    void movement()
+    {
         if (thrust != 0)
         {
             // FORCE
@@ -162,11 +159,6 @@ public class Kart : MonoBehaviour
 
             // VELOCITY
             body.velocity = transform.forward * thrust;
-        }
-
-        if (turnValue != 0)
-        {
-            body.AddRelativeTorque(Vector3.up * turnValue * TurnSpeed * thrustRatio);
         }
     }
 }

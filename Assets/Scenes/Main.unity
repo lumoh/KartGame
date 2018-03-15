@@ -287,7 +287,7 @@ Prefab:
     - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
         type: 2}
       propertyPath: Speed
-      value: 30
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
         type: 2}
@@ -298,6 +298,21 @@ Prefab:
         type: 2}
       propertyPath: AccelerationTime
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
+        type: 2}
+      propertyPath: GroundedDrag
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
+        type: 2}
+      propertyPath: GroundedAngularDrag
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
+        type: 2}
+      propertyPath: TurnSpeed
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30d9b9215f21e4528a88e8e0214bacd7, type: 2}

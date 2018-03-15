@@ -1,0 +1,10 @@
+Library/
+Temp/
+BuildOutput/
+doxygen_output/
+Assembly-CSharp*
+Assembly-UnityScript*
+*.sln
+*.sln.meta
+*.userprefs
+.DS_Store

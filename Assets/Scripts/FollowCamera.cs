@@ -9,9 +9,10 @@ public class FollowCamera : MonoBehaviour
     public float DistanceDamp;
     public Vector3 Velocity;
 
-	void FixedUpdate() 
+	void LateUpdate() 
     {
-        followSmoothDamp();
+        //followSmoothDamp();
+        simpleFollow();
 	}
 
     void followSmoothDamp()
@@ -23,5 +24,11 @@ public class FollowCamera : MonoBehaviour
             transform.position = curPos;
             transform.LookAt(Target, Target.up);
         }
-    }        
+    } 
+
+    void simpleFollow()
+    {
+        transform.position = Target.position + (Target.forward * Offset.z) + (Target.up * Offset.y);
+        transform.LookAt(Target.position + (Target.forward * 10), Target.up);    
+    }
 }

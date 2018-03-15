@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Go-Kart Style Car
+/// </summary>
 public class Kart : MonoBehaviour 
 {
-    public float Speed;
+    [Header("Kart Attributes")]
+    public float Weight;
+    public float TopSpeed;
     public float AccelerationTime;
     public float DecelerationTime;
     public float ReverseSpeed;
@@ -17,10 +22,12 @@ public class Kart : MonoBehaviour
     public float HeightOffGround;
     public float DeadZone;
 
+    // Physics
     private BoxCollider col;
     private Rigidbody body;
 
     private float thrust;
+    private float thrustRatio;
     private bool grounded;
     private bool isMoving;   
     private bool isMovingForward;
@@ -29,8 +36,6 @@ public class Kart : MonoBehaviour
     private float hInput;
 
     private int layerMask;
-
-    private float thrustRatio = 0f;
 
     void Start()
     {
@@ -54,6 +59,9 @@ public class Kart : MonoBehaviour
         turning();
     }
 
+    /// <summary>
+    /// Handle input for the kart
+    /// </summary>
     void input()
     {
         vInput = Input.GetAxis("Vertical");
@@ -97,7 +105,7 @@ public class Kart : MonoBehaviour
 
         if (isMovingForward)
         {
-            thrust = thrustRatio * Speed;
+            thrust = thrustRatio * TopSpeed;
         }
         else
         {
@@ -105,6 +113,9 @@ public class Kart : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// set direction status vars
+    /// </summary>
     void setDirection()
     {
         isMoving = body.velocity.magnitude > DeadZone;
@@ -113,6 +124,9 @@ public class Kart : MonoBehaviour
         Debug.Log("Speed = " + body.velocity.magnitude.ToString());
     }
 
+    /// <summary>
+    /// handle kart gravity and being grounded to the surface it is driving on
+    /// </summary>
     void gravity()
     {
         RaycastHit hit;
@@ -142,6 +156,9 @@ public class Kart : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// handle turning
+    /// </summary>
     void turning()
     {
         if (hInput != 0)
@@ -150,6 +167,9 @@ public class Kart : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// handle movement and thrust
+    /// </summary>
     void movement()
     {
         if (thrust != 0)

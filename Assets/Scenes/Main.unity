@@ -227,21 +227,6 @@ Prefab:
       propertyPath: Target
       value: 
       objectReference: {fileID: 238933377}
-    - target: {fileID: 114141984867344922, guid: 4717ff6af31834bd3ace647acdd77af2,
-        type: 2}
-      propertyPath: DistanceDamp
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114141984867344922, guid: 4717ff6af31834bd3ace647acdd77af2,
-        type: 2}
-      propertyPath: Offset.z
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114141984867344922, guid: 4717ff6af31834bd3ace647acdd77af2,
-        type: 2}
-      propertyPath: Offset.y
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4717ff6af31834bd3ace647acdd77af2, type: 2}
   m_IsPrefabParent: 0
@@ -283,36 +268,6 @@ Prefab:
     - target: {fileID: 4640930579714616, guid: 30d9b9215f21e4528a88e8e0214bacd7, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
-        type: 2}
-      propertyPath: Speed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
-        type: 2}
-      propertyPath: ReverseSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
-        type: 2}
-      propertyPath: AccelerationTime
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
-        type: 2}
-      propertyPath: GroundedDrag
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
-        type: 2}
-      propertyPath: GroundedAngularDrag
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
-        type: 2}
-      propertyPath: TurnSpeed
-      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30d9b9215f21e4528a88e8e0214bacd7, type: 2}

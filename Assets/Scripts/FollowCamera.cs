@@ -4,23 +4,24 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour 
 {
-    public GameObject FollowObject;      
-    public Vector3 FollowDistance;
-    public Vector3 FollowRotation;
+    public Transform Target;
+    public Vector3 Offset;
+    public float DistanceDamp;
+    public Vector3 Velocity;
 
-	// Use this for initialization
-	void Start () 
+	void FixedUpdate() 
     {
-		
+        followSmoothDamp();
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+    void followSmoothDamp()
     {
-        if (FollowObject != null)
+        if (Target != null)
         {
-            transform.localPosition = FollowDistance;
-            transform.localRotation = Quaternion.Euler(FollowRotation);
+            Vector3 toPos = Target.position + (Target.rotation * Offset);
+            Vector3 curPos = Vector3.SmoothDamp(transform.position, toPos, ref Velocity, DistanceDamp);
+            transform.position = curPos;
+            transform.LookAt(Target, Target.up);
         }
-	}
+    }        
 }

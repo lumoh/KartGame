@@ -19,6 +19,7 @@ public class Track : MonoBehaviour
                     GameObject roadPiece = Instantiate(RoadObj) as GameObject;
                     if (roadPiece != null)
                     {
+                        roadPiece.transform.SetParent(transform);
                         roadPiece.transform.position = new Vector3(x * 10, 0, z * 10);
                     }
                 }

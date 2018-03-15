@@ -43,6 +43,8 @@ public class Kart : MonoBehaviour
     void calculateThrust()
     {
         vInput = Input.GetAxis("Vertical");
+        // input is either 1, -1, or 0
+        // (drive, reverse, neutral)
         if (vInput > 0)
         {
             vInput = 1;
@@ -52,6 +54,7 @@ public class Kart : MonoBehaviour
             vInput = -1;
         }
 
+        // if drive or reverse use acceleration time
         if (vInput == 1 || vInput == -1)
         {
             thrustRatio += Time.deltaTime / AccelerationTime * vInput;
@@ -59,6 +62,7 @@ public class Kart : MonoBehaviour
         }
         else
         {
+            // coast to stop
             if (thrustRatio > 0)
             {
                 thrustRatio -= Time.deltaTime / DecelerationTime;
@@ -75,9 +79,9 @@ public class Kart : MonoBehaviour
                     thrustRatio = 0;
                 }
             }
-        }
+        }            
 
-        if (vInput > 0)
+        if (isMovingForward)
         {
             thrust = thrustRatio * Speed;
         }
@@ -86,7 +90,7 @@ public class Kart : MonoBehaviour
             thrust = thrustRatio * ReverseSpeed;
         }
 
-        //Debug.Log(currentThrust.ToString());
+        //Debug.Log(thrustRatio.ToString());
         turnValue = Input.GetAxis("Horizontal");
 
 //        TODO JUMP
@@ -105,10 +109,10 @@ public class Kart : MonoBehaviour
     void setDirection()
     {
         // if moving slow enough just stop
-        if (body.velocity.magnitude < DeadZone)
-        {
-            body.velocity = Vector3.zero;
-        }
+//        if (body.velocity.magnitude < DeadZone)
+//        {
+//            body.velocity = Vector3.zero;
+//        }
 
         isMoving = body.velocity.magnitude > DeadZone;
         isMovingForward = Vector3.Dot(transform.forward, body.velocity) >= 0;
@@ -153,7 +157,11 @@ public class Kart : MonoBehaviour
 
         if (thrust != 0)
         {
-            body.AddForce(transform.forward * thrust);
+            // FORCE
+            //body.AddForce(transform.forward * thrust);
+
+            // VELOCITY
+            body.velocity = transform.forward * thrust;
         }
 
         if (turnValue != 0)

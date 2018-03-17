@@ -21,6 +21,9 @@ public class Kart : MonoBehaviour
     public float GravityForce;
     public float HeightOffGround;
     public float DeadZone;
+    public float SlideZone;
+    public float SlidingTurnSpeed;
+    public float SlidingBoost;
 
     // Physics
     private BoxCollider col;
@@ -31,9 +34,13 @@ public class Kart : MonoBehaviour
     private bool grounded;
     private bool isMoving;   
     private bool isMovingForward;
+    private bool isSliding;
+    private bool slidingRight;
+    private bool slidingLeft;
 
     private float vInput;
     private float hInput;
+    private float jumpInput;
 
     private int layerMask;
 
@@ -66,6 +73,7 @@ public class Kart : MonoBehaviour
     {
         vInput = Input.GetAxis("Vertical");
         hInput = Input.GetAxis("Horizontal");
+        jumpInput = Input.GetAxis("Jump");
 
         if (vInput > 0)
         {
@@ -111,6 +119,22 @@ public class Kart : MonoBehaviour
         {
             thrust = thrustRatio * ReverseSpeed;
         }
+
+        if (isSliding)
+        {
+            float turnRange = 1.0f - SlideZone;  
+            float halfTurn = turnRange / 2.0f;
+            float midPoint = SlideZone + halfTurn;
+
+            if (slidingRight)
+            {                
+                hInput =  midPoint + (halfTurn * hInput);
+            }
+            else if( slidingLeft)
+            {
+                hInput = -midPoint + (halfTurn * hInput);
+            }
+        }
     }
 
     /// <summary>
@@ -121,7 +145,23 @@ public class Kart : MonoBehaviour
         isMoving = body.velocity.magnitude > DeadZone;
         isMovingForward = Vector3.Dot(transform.forward, body.velocity) >= 0;
 
-        Debug.Log("Speed = " + body.velocity.magnitude.ToString());
+        if(jumpInput == 0)
+        {
+            isSliding = false;
+        }
+
+        if (!isSliding)
+        {
+            slidingRight = jumpInput > 0 && hInput > SlideZone;
+            slidingLeft = jumpInput > 0 && hInput < -SlideZone;
+            isSliding = slidingRight || slidingLeft;
+        }
+
+//        if (isSliding)
+//        {
+//            Debug.Log("Sliding!");
+//        }
+        //Debug.Log("Speed = " + body.velocity.magnitude.ToString());
     }
 
     /// <summary>
@@ -163,7 +203,12 @@ public class Kart : MonoBehaviour
     {
         if (hInput != 0)
         {
-            body.AddRelativeTorque(Vector3.up * hInput * TurnSpeed * thrustRatio);
+            float turnSpeed = TurnSpeed;
+            if (isSliding)
+            {
+                turnSpeed = SlidingTurnSpeed;
+            }
+            body.AddRelativeTorque(Vector3.up * hInput * turnSpeed * thrustRatio);
         }
     }
 
@@ -174,11 +219,12 @@ public class Kart : MonoBehaviour
     {
         if (thrust != 0)
         {
-            // FORCE
-            //body.AddForce(transform.forward * thrust);
-
-            // VELOCITY
-            body.velocity = transform.forward * thrust;
+            Vector3 vel = transform.forward * thrust;
+            if (isSliding)
+            {
+                vel *= SlidingBoost;
+            }                
+            body.velocity = vel;
         }
     }
 }

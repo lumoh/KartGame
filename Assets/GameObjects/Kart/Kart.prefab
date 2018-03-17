@@ -123,11 +123,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76d29ea86574d44b995c7150fc5972bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 20
+  Weight: 10
+  TopSpeed: 30
   AccelerationTime: 2
   DecelerationTime: 5
   ReverseSpeed: 5
-  TurnSpeed: 25
+  TurnSpeed: 20
   GroundedDrag: 10
   GroundedAngularDrag: 10
   AirDrag: 0.1
@@ -135,3 +136,6 @@ MonoBehaviour:
   GravityForce: 100
   HeightOffGround: 0.5
   DeadZone: 1.5
+  SlideZone: 0.3
+  SlidingTurnSpeed: 40
+  SlidingBoost: 1.5

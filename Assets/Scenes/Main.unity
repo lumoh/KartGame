@@ -269,6 +269,36 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
+        type: 2}
+      propertyPath: TopSpeed
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
+        type: 2}
+      propertyPath: Weight
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
+        type: 2}
+      propertyPath: SlideZone
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
+        type: 2}
+      propertyPath: SlidingTurnSpeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
+        type: 2}
+      propertyPath: TurnSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130237792376980, guid: 30d9b9215f21e4528a88e8e0214bacd7,
+        type: 2}
+      propertyPath: SlidingBoost
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30d9b9215f21e4528a88e8e0214bacd7, type: 2}
   m_IsPrefabParent: 0

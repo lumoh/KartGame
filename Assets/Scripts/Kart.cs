@@ -69,6 +69,7 @@ public class Kart : MonoBehaviour
         gravity();
         movement();
         turning();
+        slideParticles();
     }
 
     /// <summary>
@@ -223,7 +224,7 @@ public class Kart : MonoBehaviour
             {
                 inverse = -1;
             }
-            wheelT.localRotation = Quaternion.Euler(0, hInput * 35.0f * thrustRatio * inverse, 90);
+            wheelT.localRotation = Quaternion.Euler(0, hInput * 35.0f * thrustRatio * inverse, 0);
         }
     }
 
@@ -245,15 +246,21 @@ public class Kart : MonoBehaviour
         foreach (Transform wheelT in RotatingWheels)
         {                
             wheelT.Rotate(Vector3.up, wheelT.rotation.y + (-thrust * 2.0f));
-        }
+        }            
+    }
 
-        if (isSliding)
+    void slideParticles()
+    {
+        if (isSliding && DustTrails.Length > 0)
         {
             for(int i = 0; i< DustTrails.Length; i++)
             {
-                if (!DustTrails[i].isPlaying)
-                { 
-                    DustTrails[i].Play();
+                if (DustTrails[i] != null)
+                {
+                    if (!DustTrails[i].isPlaying)
+                    { 
+                        DustTrails[i].Play();
+                    }
                 }
             }
         }
@@ -261,9 +268,12 @@ public class Kart : MonoBehaviour
         {
             for (int i = 0; i < DustTrails.Length; i++)
             {
-                if (DustTrails[i].isPlaying)
-                { 
-                    DustTrails[i].Stop();
+                if (DustTrails[i] != null)
+                {
+                    if (DustTrails[i].isPlaying)
+                    { 
+                        DustTrails[i].Stop();
+                    }
                 }
             }
         }

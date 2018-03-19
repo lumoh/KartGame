@@ -25,6 +25,11 @@ public class Kart : MonoBehaviour
     public float SlidingTurnSpeed;
     public float SlidingBoost;
 
+    [Header("Kart Wheels")]
+    public List<Transform> RotatingWheels;
+    public List<Transform> TurningWheels;
+    public ParticleSystem[] DustTrails = new ParticleSystem[2];
+
     // Physics
     private BoxCollider col;
     private Rigidbody body;
@@ -210,6 +215,16 @@ public class Kart : MonoBehaviour
             }
             body.AddRelativeTorque(Vector3.up * hInput * turnSpeed * thrustRatio);
         }
+
+        foreach (Transform wheelT in TurningWheels)
+        {
+            float inverse = 1;
+            if (!isMovingForward)
+            {
+                inverse = -1;
+            }
+            wheelT.localRotation = Quaternion.Euler(0, hInput * 35.0f * thrustRatio * inverse, 90);
+        }
     }
 
     /// <summary>
@@ -225,6 +240,32 @@ public class Kart : MonoBehaviour
                 vel *= SlidingBoost;
             }                
             body.velocity = vel;
+        }
+
+        foreach (Transform wheelT in RotatingWheels)
+        {                
+            wheelT.Rotate(Vector3.up, wheelT.rotation.y + (-thrust * 2.0f));
+        }
+
+        if (isSliding)
+        {
+            for(int i = 0; i< DustTrails.Length; i++)
+            {
+                if (!DustTrails[i].isPlaying)
+                { 
+                    DustTrails[i].Play();
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < DustTrails.Length; i++)
+            {
+                if (DustTrails[i].isPlaying)
+                { 
+                    DustTrails[i].Stop();
+                }
+            }
         }
     }
 }

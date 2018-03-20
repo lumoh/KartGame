@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Go-Kart Style Car
 /// </summary>
-public class Kart : MonoBehaviour 
+public class Kart : NetworkBehaviour 
 {
     [Header("Kart Attributes")]
     public float Weight;
@@ -24,6 +25,10 @@ public class Kart : MonoBehaviour
     public float SlideZone;
     public float SlidingTurnSpeed;
     public float SlidingBoost;
+    public GameObject KartCamPrefab;
+
+    [HideInInspector]
+    public FollowCamera FollowCam;
 
     [Header("Kart Wheels")]
     public List<Transform> RotatingWheels;
@@ -56,10 +61,29 @@ public class Kart : MonoBehaviour
 
         layerMask = 1 << LayerMask.NameToLayer("Kart");
         layerMask = ~layerMask;
+
+        if (KartCamPrefab != null)
+        {
+            GameObject camObj = Instantiate(KartCamPrefab) as GameObject;
+            if (camObj != null)
+            {
+                FollowCam = camObj.GetComponent<FollowCamera>();
+                FollowCam.Target = transform;
+                if (isLocalPlayer)
+                {
+                    FollowCam.GetComponent<Camera>().enabled = true;
+                }
+            }
+        }
     }
 
     void Update()
-    {        
+    {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         input();
     }
 

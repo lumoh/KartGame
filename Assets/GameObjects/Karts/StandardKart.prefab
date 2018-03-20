@@ -276,6 +276,8 @@ GameObject:
   - component: {fileID: 114569944295464734}
   - component: {fileID: 54994528126645680}
   - component: {fileID: 65569944668942458}
+  - component: {fileID: 114189338355335232}
+  - component: {fileID: 114669721444534176}
   m_Layer: 9
   m_Name: StandardKart
   m_TagString: Untagged
@@ -752,6 +754,38 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.5, z: 2.65}
   m_Center: {x: 0, y: 0.17, z: 0.3}
+--- !u!114 &114189338355335232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1998018597130342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 91
+    i1: 56
+    i2: 8
+    i3: 18
+    i4: 209
+    i5: 72
+    i6: 68
+    i7: 229
+    i8: 104
+    i9: 207
+    i10: 198
+    i11: 158
+    i12: 152
+    i13: 211
+    i14: 1
+    i15: 112
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114569944295464734
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -779,6 +813,9 @@ MonoBehaviour:
   SlideZone: 0.3
   SlidingTurnSpeed: 120
   SlidingBoost: 1.05
+  KartCamPrefab: {fileID: 1217758152381592, guid: 4717ff6af31834bd3ace647acdd77af2,
+    type: 2}
+  FollowCam: {fileID: 0}
   RotatingWheels: []
   TurningWheels:
   - {fileID: 4165734803277364}
@@ -786,6 +823,27 @@ MonoBehaviour:
   DustTrails:
   - {fileID: 198416033647754212}
   - {fileID: 198629714582053734}
+--- !u!114 &114669721444534176
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1998018597130342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.05
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!198 &198416033647754212
 ParticleSystem:
   m_ObjectHideFlags: 1

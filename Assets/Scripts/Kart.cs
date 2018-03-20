@@ -194,6 +194,7 @@ public class Kart : MonoBehaviour
         }
         else
         {
+            isSliding = false;
             grounded = false;
             body.AddForceAtPosition(transform.up * -GravityForce, transform.position);
 
@@ -233,14 +234,17 @@ public class Kart : MonoBehaviour
     /// </summary>
     void movement()
     {
-        if (thrust != 0)
+        if (grounded)
         {
-            Vector3 vel = transform.forward * thrust;
-            if (isSliding)
+            if (thrust != 0)
             {
-                vel *= SlidingBoost;
-            }                
-            body.velocity = vel;
+                Vector3 vel = transform.forward * thrust;
+                if (isSliding)
+                {
+                    vel *= SlidingBoost;
+                }                
+                body.velocity = vel;
+            }
         }
 
         foreach (Transform wheelT in RotatingWheels)
@@ -253,7 +257,7 @@ public class Kart : MonoBehaviour
     {
         if (isSliding && DustTrails.Length > 0)
         {
-            for(int i = 0; i< DustTrails.Length; i++)
+            for (int i = 0; i < DustTrails.Length; i++)
             {
                 if (DustTrails[i] != null)
                 {

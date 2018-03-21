@@ -128,7 +128,12 @@ public class Kart : MonoBehaviour
         // if drive or reverse use acceleration time
         if (vInput == 1 || vInput == -1)
         {
-            thrustRatio += Time.deltaTime / AccelerationTime * vInput;
+            float accelTime = AccelerationTime;
+            if (vInput == 1 && !isMovingForward)
+            {
+                accelTime /= 2;
+            }
+            thrustRatio += Time.deltaTime / accelTime * vInput;
             thrustRatio = Mathf.Clamp(thrustRatio, -1, 1);
         }
         else
@@ -243,6 +248,12 @@ public class Kart : MonoBehaviour
     /// </summary>
     void turning()
     {
+        float flip = 1;
+        if (!isMovingForward)
+        {
+            flip = -1;
+        }
+
         if (hInput != 0 && thrustRatio != 0)
         {
             float turnSpeed = TurnSpeed;
@@ -250,17 +261,13 @@ public class Kart : MonoBehaviour
             {
                 turnSpeed = SlidingTurnSpeed;
             }
-            body.AddRelativeTorque(Vector3.up * hInput * turnSpeed);
+
+            body.AddRelativeTorque(Vector3.up * hInput * turnSpeed * flip);
         }
 
         foreach (Transform wheelT in TurningWheels)
         {
-            float inverse = 1;
-            if (!isMovingForward)
-            {
-                inverse = -1;
-            }
-            wheelT.localRotation = Quaternion.Euler(0, hInput * 35.0f * thrustRatio * inverse, 0);
+            wheelT.localRotation = Quaternion.Euler(0, hInput * 35.0f * thrustRatio * flip, 0);
         }
     }
 
@@ -288,6 +295,9 @@ public class Kart : MonoBehaviour
         }            
     }
 
+    /// <summary>
+    /// Slides the particles.
+    /// </summary>
     void slideParticles()
     {
         if (isSliding && DustTrails.Length > 0)

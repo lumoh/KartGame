@@ -64,6 +64,8 @@ public class Kart : MonoBehaviour
         layerMask = 1 << LayerMask.NameToLayer("Kart");
         layerMask = ~layerMask;
 
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Kart"), LayerMask.NameToLayer("Items"));
+
         if (KartCamPrefab != null)
         {
             GameObject camObj = Instantiate(KartCamPrefab) as GameObject;
@@ -325,6 +327,22 @@ public class Kart : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// handle collision
+    /// </summary>
+    void OnCollisionEnter(Collision collision)
+    {
+        
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Item")
+        {
+
         }
     }
 }

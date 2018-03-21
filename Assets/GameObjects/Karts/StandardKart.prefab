@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 54994528126645680}
   - component: {fileID: 65569944668942458}
   - component: {fileID: 114189338355335232}
-  - component: {fileID: 114669721444534176}
+  - component: {fileID: 114689413715558642}
   m_Layer: 9
   m_Name: StandardKart
   m_TagString: Untagged
@@ -292,7 +292,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1637216479583114}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: -0.314, z: 0.723}
+  m_LocalPosition: {x: -0.5, y: -0.314, z: 0.8}
   m_LocalScale: {x: -6, y: 6, z: 6}
   m_Children:
   - {fileID: 4303159581862674}
@@ -319,7 +319,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1804951600916946}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -0.314, z: 0.723}
+  m_LocalPosition: {x: 0.5, y: -0.314, z: 0.8}
   m_LocalScale: {x: 6, y: 6, z: 6}
   m_Children:
   - {fileID: 4456929578405992}
@@ -823,7 +823,7 @@ MonoBehaviour:
   DustTrails:
   - {fileID: 198416033647754212}
   - {fileID: 198629714582053734}
---- !u!114 &114669721444534176
+--- !u!114 &114689413715558642
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -831,19 +831,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1998018597130342}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b75ee09729d7b4faf8a709fff30dace5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TransformSyncMode: 3
-  m_SendInterval: 0.05
-  m_SyncRotationAxis: 7
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
+  _posLerpRate: 5
+  _rotLerpRate: 5
+  _posThreshold: 0.1
+  _rotThreshold: 1
 --- !u!198 &198416033647754212
 ParticleSystem:
   m_ObjectHideFlags: 1

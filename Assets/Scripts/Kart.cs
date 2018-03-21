@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 /// <summary>
 /// Go-Kart Style Car
 /// </summary>
-public class Kart : NetworkBehaviour 
+public class Kart : MonoBehaviour 
 {
     [Header("Kart Attributes")]
     public float Weight;
@@ -53,9 +53,11 @@ public class Kart : NetworkBehaviour
     private float jumpInput;
 
     private int layerMask;
+    private NetworkSyncTransform networkSync;
 
     void Start()
     {
+        networkSync = GetComponent<NetworkSyncTransform>();
         col = GetComponent<BoxCollider>();
         body = GetComponent<Rigidbody>();
 
@@ -69,7 +71,7 @@ public class Kart : NetworkBehaviour
             {
                 FollowCam = camObj.GetComponent<FollowCamera>();
                 FollowCam.Target = transform;
-                if (isLocalPlayer)
+                if (isLocal())
                 {
                     FollowCam.GetComponent<Camera>().enabled = true;
                 }
@@ -77,18 +79,27 @@ public class Kart : NetworkBehaviour
         }
     }
 
+    bool isLocal()
+    {
+        return networkSync != null && networkSync.isLocalPlayer;
+    }
+
     void Update()
     {
-        if (!isLocalPlayer)
+        if (!isLocal())
         {
             return;
         }
-
         input();
     }
 
     void FixedUpdate()
     {
+        if (!isLocal())
+        {
+            return;
+        }
+
         setDirection();
         gravity();
         movement();
@@ -232,14 +243,14 @@ public class Kart : NetworkBehaviour
     /// </summary>
     void turning()
     {
-        if (hInput != 0)
+        if (hInput != 0 && thrustRatio != 0)
         {
             float turnSpeed = TurnSpeed;
             if (isSliding)
             {
                 turnSpeed = SlidingTurnSpeed;
             }
-            body.AddRelativeTorque(Vector3.up * hInput * turnSpeed * thrustRatio);
+            body.AddRelativeTorque(Vector3.up * hInput * turnSpeed);
         }
 
         foreach (Transform wheelT in TurningWheels)

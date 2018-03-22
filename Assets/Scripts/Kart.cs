@@ -25,10 +25,17 @@ public class Kart : MonoBehaviour
     public float SlideZone;
     public float SlidingTurnSpeed;
     public float SlidingBoost;
+
+    [Header("Kart Objects")]
     public GameObject KartCamPrefab;
+    public KartUI UI;
 
     [HideInInspector]
     public FollowCamera FollowCam;
+
+    [HideInInspector]
+    public Item CurrentItem;
+    public Transform ItemOrigin;
 
     [Header("Kart Wheels")]
     public List<Transform> RotatingWheels;
@@ -64,8 +71,6 @@ public class Kart : MonoBehaviour
         layerMask = 1 << LayerMask.NameToLayer("Kart");
         layerMask = ~layerMask;
 
-        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Kart"), LayerMask.NameToLayer("Items"));
-
         if (KartCamPrefab != null)
         {
             GameObject camObj = Instantiate(KartCamPrefab) as GameObject;
@@ -75,7 +80,13 @@ public class Kart : MonoBehaviour
                 FollowCam.Target = transform;
                 if (isLocal())
                 {
-                    FollowCam.GetComponent<Camera>().enabled = true;
+                    Camera cam = FollowCam.GetComponent<Camera>();
+                    cam.enabled = true;
+
+                    if (UI != null)
+                    {
+                        UI.gameObject.SetActive(true);
+                    }
                 }
             }
         }
@@ -209,7 +220,8 @@ public class Kart : MonoBehaviour
 //        {
 //            Debug.Log("Sliding!");
 //        }
-        //Debug.Log("Speed = " + body.velocity.magnitude.ToString());
+
+        UI.SetSpeed((int)body.velocity.magnitude);
     }
 
     /// <summary>
@@ -330,19 +342,38 @@ public class Kart : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// handle collision
-    /// </summary>
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision other)
     {
-        
-    }
+        if (other.gameObject.tag == "Track")
+        {
+            vInput = 0;
+            thrustRatio = 0;
+        }
+    }        
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Item")
         {
-
+            if (CurrentItem == null)
+            {
+                GameObject itemPrefab = Resources.Load<GameObject>("Items/GreenShells");
+                if (itemPrefab != null)
+                {
+                    GameObject itemObj = Instantiate(itemPrefab) as GameObject;
+                    if (itemObj != null)
+                    {                    
+                        itemObj.transform.SetParent(ItemOrigin);
+                        itemObj.transform.localPosition = Vector3.zero;
+                        Item item = itemObj.GetComponent<Item>();
+                        if (item != null)
+                        {
+                            CurrentItem = item;
+                            item.Activate();
+                        }
+                    }
+                }
+            }
         }
     }
 }

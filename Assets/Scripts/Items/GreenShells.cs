@@ -14,7 +14,20 @@ public class GreenShells : Item
 
     public override void Fire()
     {
-        base.Fire();
+        if (Shells != null && Shells.Count > 0)
+        {
+            int index = Shells.Count - 1;
+            GameObject shell = Shells[index];
+            Shells.RemoveAt(index);
+            if (shell != null)
+            {
+                
+            }
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public override void Update()

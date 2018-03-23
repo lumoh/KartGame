@@ -125,6 +125,12 @@ public class Kart : MonoBehaviour
     /// </summary>
     void input()
     {
+        // fire!
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            fire();
+        }
+
         vInput = Input.GetAxis("Vertical");
         hInput = Input.GetAxis("Horizontal");
         jumpInput = Input.GetAxis("Jump");
@@ -339,6 +345,14 @@ public class Kart : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    void fire()
+    {
+        if (CurrentItem != null)
+        {
+            CurrentItem.Fire();   
         }
     }
 

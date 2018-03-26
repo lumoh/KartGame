@@ -298,14 +298,39 @@ public class Kart : MonoBehaviour
     {
         if (grounded)
         {
+            // Velocity style acceleration
+            /*
             if (thrust != 0)
             {
                 Vector3 vel = transform.forward * thrust;
                 if (isSliding)
                 {
                     vel *= SlidingBoost;
-                }                
+                }
                 body.velocity = vel;
+            }
+            */
+
+            // Force style acceleration
+            /*
+            if (vInput == 1)
+            {
+                body.AddForce(transform.forward * TopSpeed, ForceMode.Acceleration);
+            }
+            else if (vInput == -1)
+            {
+                body.AddForce(transform.forward * -ReverseSpeed, ForceMode.Acceleration);
+            }
+            */
+
+            if (thrust != 0)
+            {
+                Vector3 force = transform.forward * thrust;
+                if (isSliding)
+                {
+                    force *= SlidingBoost;
+                }
+                body.AddForce(force, ForceMode.Acceleration);
             }
         }
 
@@ -363,7 +388,7 @@ public class Kart : MonoBehaviour
             vInput = 0;
             thrustRatio = 0;
         }
-    }        
+    }
 
     void OnTriggerEnter(Collider other)
     {

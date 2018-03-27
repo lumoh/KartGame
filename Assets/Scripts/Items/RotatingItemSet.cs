@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Rotating item set is a set of items that rotate around the kart before fired
@@ -38,6 +39,7 @@ public class RotatingItemSet : Item
             GameObject itemObj = Instantiate(ItemPrefab) as GameObject;
             if (itemObj != null)
             {
+                NetworkServer.Spawn(itemObj);
                 itemObj.transform.SetParent(transform);
                 itemObj.transform.localPosition = Vector3.zero;
                 float angle = (360 / NumItems) * i;

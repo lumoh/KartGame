@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
   Offset: {x: 0, y: 2, z: -5}
-  DistanceDamp: 0.05
+  DistanceDamp: 0.1
   Velocity: {x: 1, y: 1, z: 1}
 --- !u!124 &124572709274879816
 Behaviour:

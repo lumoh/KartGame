@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Projectile that just shoots straight and bounces off walls
+/// </summary>
 public class Projectile : Item 
 {
+    /// <summary>
+    /// The speed.
+    /// </summary>
     public float Speed;
 
     private Rigidbody rb;

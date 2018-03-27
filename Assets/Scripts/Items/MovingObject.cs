@@ -69,7 +69,7 @@ public class MovingObject : MonoBehaviour
     /// <summary>
     /// handle kart gravity and being grounded to the surface it is driving on
     /// </summary>
-    void gravity()
+    protected virtual void gravity()
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, -Vector3.up, out hit, HeightOffGround + 0.1f, layerMask))
@@ -92,6 +92,9 @@ public class MovingObject : MonoBehaviour
         {
             isGrounded = false;
             body.AddForceAtPosition(transform.up * -GravityForce, transform.position);
+
+            body.drag = AirDrag;
+            body.angularDrag = AirAngularDrag;
         }
     }
 }

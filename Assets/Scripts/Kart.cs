@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 /// <summary>
 /// Go-Kart Style Car
 /// </summary>
-public class Kart : MonoBehaviour 
+public class Kart : MovingObject 
 {
     [Header("Kart Attributes")]
     public float Weight;
@@ -15,12 +15,6 @@ public class Kart : MonoBehaviour
     public float DecelerationTime;
     public float ReverseSpeed;
     public float TurnSpeed;
-    public float GroundedDrag;
-    public float GroundedAngularDrag;
-    public float AirDrag;
-    public float AirAngularDrag;
-    public float GravityForce;
-    public float HeightOffGround;
     public float DeadZone;
     public float SlideZone;
     public float SlidingTurnSpeed;
@@ -42,13 +36,8 @@ public class Kart : MonoBehaviour
     public List<Transform> TurningWheels;
     public ParticleSystem[] DustTrails = new ParticleSystem[2];
 
-    // Physics
-    private BoxCollider col;
-    private Rigidbody body;
-
     private float thrust;
     private float thrustRatio;
-    private bool grounded;
     private bool isMoving;   
     private bool isMovingForward;
     private bool isSliding;
@@ -59,12 +48,12 @@ public class Kart : MonoBehaviour
     private float hInput;
     private float jumpInput;
 
-    private int layerMask;
-    private NetworkSyncTransform networkSync;
+    [HideInInspector]
+    public NetworkSyncTransform NetworkSync;
 
     void Start()
     {
-        networkSync = GetComponent<NetworkSyncTransform>();
+        NetworkSync = GetComponent<NetworkSyncTransform>();
         col = GetComponent<BoxCollider>();
         body = GetComponent<Rigidbody>();
 
@@ -94,7 +83,7 @@ public class Kart : MonoBehaviour
 
     bool isLocal()
     {
-        return networkSync != null && networkSync.isLocalPlayer;
+        return NetworkSync != null && NetworkSync.isLocalPlayer;
     }
 
     void Update()
@@ -103,10 +92,11 @@ public class Kart : MonoBehaviour
         {
             return;
         }
+
         input();
     }
 
-    void FixedUpdate()
+    public override void FixedUpdate()
     {
         if (!isLocal())
         {
@@ -233,12 +223,12 @@ public class Kart : MonoBehaviour
     /// <summary>
     /// handle kart gravity and being grounded to the surface it is driving on
     /// </summary>
-    void gravity()
+    protected override void gravity()
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, -Vector3.up, out hit, HeightOffGround + 0.1f, layerMask))
         {
-            grounded = true;
+            isGrounded = true;
 
             Quaternion rot = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
             transform.rotation = Quaternion.Lerp(transform.rotation, rot, 1);
@@ -255,7 +245,7 @@ public class Kart : MonoBehaviour
         else
         {
             isSliding = false;
-            grounded = false;
+            isGrounded = false;
             body.AddForceAtPosition(transform.up * -GravityForce, transform.position);
 
             body.drag = AirDrag;
@@ -296,33 +286,8 @@ public class Kart : MonoBehaviour
     /// </summary>
     void movement()
     {
-        if (grounded)
+        if (isGrounded)
         {
-            // Velocity style acceleration
-            /*
-            if (thrust != 0)
-            {
-                Vector3 vel = transform.forward * thrust;
-                if (isSliding)
-                {
-                    vel *= SlidingBoost;
-                }
-                body.velocity = vel;
-            }
-            */
-
-            // Force style acceleration
-            /*
-            if (vInput == 1)
-            {
-                body.AddForce(transform.forward * TopSpeed, ForceMode.Acceleration);
-            }
-            else if (vInput == -1)
-            {
-                body.AddForce(transform.forward * -ReverseSpeed, ForceMode.Acceleration);
-            }
-            */
-
             if (thrust != 0)
             {
                 Vector3 force = transform.forward * thrust;

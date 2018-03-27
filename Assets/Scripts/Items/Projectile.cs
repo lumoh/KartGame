@@ -6,9 +6,12 @@ public class Projectile : Item
 {
     public float Speed;
 
+    private Rigidbody rb;
+    private Collider col;
+
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
     public override void Activate()
@@ -20,11 +23,19 @@ public class Projectile : Item
     {
         transform.position = Owner.transform.position + (Owner.transform.forward * 2);
         transform.SetParent(null);
-        Rigidbody rigid = GetComponent<Rigidbody>();
-        if (rigid != null)
+        transform.rotation = Owner.transform.rotation;
+
+        rb = GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            rigid.isKinematic = false;
-            rigid.velocity = Owner.transform.forward * Speed;
+            rb.isKinematic = false;
+            rb.velocity = Owner.transform.forward * Speed;
+        }
+
+        col = GetComponent<Collider>();
+        if (col != null)
+        {
+            col.isTrigger = false;
         }
     }
 }

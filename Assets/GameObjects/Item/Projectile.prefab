@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Owner: {fileID: 0}
-  Speed: 90
+  Speed: 60
 --- !u!114 &114442214697680118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -186,7 +186,7 @@ SphereCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1014223635180182}
-  m_Material: {fileID: 13400000, guid: e227a8b82eabc4c5f874f44b761e5bff, type: 2}
+  m_Material: {fileID: 13400000, guid: 65da1e5c38b794bcba1651566f74b2d8, type: 2}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2

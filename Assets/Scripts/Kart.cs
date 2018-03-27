@@ -396,7 +396,7 @@ public class Kart : MonoBehaviour
         {
             if (CurrentItem == null)
             {
-                GameObject itemPrefab = Resources.Load<GameObject>("Items/GreenShells");
+                GameObject itemPrefab = Resources.Load<GameObject>("Items/ProjectileSet");
                 if (itemPrefab != null)
                 {
                     GameObject itemObj = Instantiate(itemPrefab) as GameObject;
@@ -408,7 +408,8 @@ public class Kart : MonoBehaviour
                         if (item != null)
                         {
                             CurrentItem = item;
-                            item.Activate();
+                            CurrentItem.Owner = this;
+                            CurrentItem.Activate();
                         }
                     }
                 }

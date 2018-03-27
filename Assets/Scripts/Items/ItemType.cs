@@ -1,4 +1,5 @@
 ﻿public class ItemType
 {
-    public const string GREEN_SHELLS = "GreenShells";
+    public const string PATH = "Items/";
+    public const string PROJECTILE_SET = "ProjectileSet";
 }

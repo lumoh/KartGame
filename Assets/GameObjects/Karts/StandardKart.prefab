@@ -999,7 +999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weight: 10
-  TopSpeed: 30
+  TopSpeed: 300
   AccelerationTime: 2
   DecelerationTime: 5
   ReverseSpeed: 5

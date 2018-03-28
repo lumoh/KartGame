@@ -19,12 +19,12 @@ public class NetworkSyncTransform : NetworkBehaviour
     [SyncVar]
     protected Vector3 _lastRotation;
 
-    void Start()
+    public virtual void Start()
     {
         
     }
 
-    void Update()
+    public virtual void Update()
     {
         if (isLocalPlayer)
             return;
@@ -33,7 +33,7 @@ public class NetworkSyncTransform : NetworkBehaviour
         InterpolateRotation();
     }
 
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         if (!isLocalPlayer)
             return;

@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Generic class for item
 /// </summary>
-public class Item : MonoBehaviour 
+public class Item : NetworkBehaviour 
 {
     /// <summary>
     /// the owner of the item
@@ -23,7 +24,8 @@ public class Item : MonoBehaviour
     /// <summary>
     /// Fire this instance.
     /// </summary>
-    public virtual void Fire()
+    [Command(channel = Channels.DefaultUnreliable)]
+    public virtual void CmdFire()
     {
         
     }

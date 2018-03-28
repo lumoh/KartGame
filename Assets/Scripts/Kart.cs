@@ -38,7 +38,7 @@ public class Kart : MovingObject
 
     private float thrust;
     private float thrustRatio;
-    private bool isMoving;   
+    //private bool isMoving;   
     private bool isMovingForward;
     private bool isSliding;
     private bool slidingRight;
@@ -48,14 +48,9 @@ public class Kart : MovingObject
     private float hInput;
     private float jumpInput;
 
-    [HideInInspector]
-    public NetworkSyncTransform NetworkSync;
-
-    void Start()
+    public override void Start()
     {
-        NetworkSync = GetComponent<NetworkSyncTransform>();
-        col = GetComponent<BoxCollider>();
-        body = GetComponent<Rigidbody>();
+        base.Start();
 
         layerMask = 1 << LayerMask.NameToLayer("Kart");
         layerMask = ~layerMask;
@@ -67,7 +62,7 @@ public class Kart : MovingObject
             {
                 FollowCam = camObj.GetComponent<FollowCamera>();
                 FollowCam.Target = transform;
-                if (isLocal())
+                if (isLocalPlayer)
                 {
                     Camera cam = FollowCam.GetComponent<Camera>();
                     cam.enabled = true;
@@ -79,46 +74,40 @@ public class Kart : MovingObject
                 }
             }
         }
-    }
+    }        
 
-    bool isLocal()
+    public override void Update()
     {
-        return NetworkSync != null && NetworkSync.isLocalPlayer;
-    }
-
-    void Update()
-    {
-        if (!isLocal())
+        if (!isLocalPlayer)
         {
             return;
         }
 
         input();
+        base.Update();
     }
 
     public override void FixedUpdate()
     {
-        if (!isLocal())
+        if (!isLocalPlayer)
         {
             return;
         }
 
         setDirection();
-        gravity();
         movement();
         turning();
         slideParticles();
+
+        base.FixedUpdate();
     }
 
-    /// <summary>
-    /// Handle input for the kart
-    /// </summary>
     void input()
     {
         // fire!
         if (Input.GetKeyDown(KeyCode.E))
         {
-            fire();
+            CmdFire();
         }
 
         vInput = Input.GetAxis("Vertical");
@@ -197,7 +186,7 @@ public class Kart : MovingObject
     /// </summary>
     void setDirection()
     {
-        isMoving = body.velocity.magnitude > DeadZone;
+        //isMoving = body.velocity.magnitude > DeadZone;
         isMovingForward = Vector3.Dot(transform.forward, body.velocity) >= 0;
 
         if(jumpInput == 0)
@@ -338,11 +327,35 @@ public class Kart : MovingObject
         }
     }
 
-    void fire()
+    [Command]
+    void CmdFire()
     {
-        if (CurrentItem != null)
+//        if (CurrentItem != null)
+//        {
+//            CurrentItem.CmdFire();   
+//        }
+
+        GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.PROJECTILE);
+        if (itemPrefab != null)
         {
-            CurrentItem.Fire();   
+            GameObject itemObj = Instantiate(itemPrefab) as GameObject;
+            if (itemObj != null)
+            {
+                itemObj.transform.position = transform.position + (transform.forward * 2);
+                Rigidbody itemRB = itemObj.GetComponent<Rigidbody>();
+                if (itemRB != null)
+                {
+                    itemRB.isKinematic = false;
+                    itemRB.velocity = transform.forward * 60f;
+                }
+
+                Collider itemCol = itemObj.GetComponent<Collider>();
+                if (itemCol != null)
+                {
+                    itemCol.isTrigger = false;
+                }
+                NetworkServer.Spawn(itemObj);
+            }           
         }
     }
 
@@ -357,11 +370,13 @@ public class Kart : MovingObject
 
     void OnTriggerEnter(Collider other)
     {
+        /*
         if (other.gameObject.tag == "Item")
         {
             if (CurrentItem == null)
             {
-                GameObject itemPrefab = Resources.Load<GameObject>("Items/ProjectileSet");
+                //GameObject itemPrefab = Resources.Load<GameObject>("Items/ProjectileSet");
+                GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.SINGLE_PROJECTILE);
                 if (itemPrefab != null)
                 {
                     GameObject itemObj = Instantiate(itemPrefab) as GameObject;
@@ -380,5 +395,6 @@ public class Kart : MovingObject
                 }
             }
         }
+        */
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Basic Projectile that moves without thrust
 /// </summary>
-public class MovingObject : MonoBehaviour 
+public class MovingObject : NetworkBehaviour 
 {
     /// <summary>
     /// Height off the ground this object should hover
@@ -31,7 +32,6 @@ public class MovingObject : MonoBehaviour
     /// The gravity force, applied when in the air
     /// </summary>
     public float GravityForce;
-
     /// <summary>
     /// The grounded.
     /// </summary>
@@ -48,18 +48,28 @@ public class MovingObject : MonoBehaviour
     /// layer mask
     /// </summary>
     protected int layerMask;
-        
-    void Start()
+
+    public virtual void Start()
     {
         col = GetComponent<BoxCollider>();
         body = GetComponent<Rigidbody>();
 
-        layerMask = 1 << LayerMask.NameToLayer("Items");
+        layerMask = 1 << LayerMask.NameToLayer("Default");
         layerMask = ~layerMask;
+    }
+
+    public virtual void Update()
+    {
+        
     }
 
     public virtual void FixedUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         if (body != null && !body.isKinematic)
         {
             gravity();

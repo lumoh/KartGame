@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Projectile that just shoots straight and bounces off walls
@@ -25,11 +26,12 @@ public class Projectile : Item
         
     }
 
-    public override void Fire()
+    [Command(channel = Channels.DefaultUnreliable)]
+    public override void CmdFire()
     {
         transform.position = Owner.transform.position + (Owner.transform.forward * 2);
         transform.SetParent(null);
-        transform.rotation = Owner.transform.rotation;
+        //transform.rotation = Owner.transform.rotation;
 
         rb = GetComponent<Rigidbody>();
         if (rb != null)

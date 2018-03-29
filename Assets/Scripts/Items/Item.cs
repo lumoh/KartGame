@@ -24,8 +24,7 @@ public class Item : NetworkBehaviour
     /// <summary>
     /// Fire this instance.
     /// </summary>
-    [Command(channel = Channels.DefaultUnreliable)]
-    public virtual void CmdFire()
+    public virtual void Fire()
     {
         
     }

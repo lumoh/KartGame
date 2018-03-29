@@ -395,7 +395,7 @@ GameObject:
   - component: {fileID: 54994528126645680}
   - component: {fileID: 65569944668942458}
   - component: {fileID: 114189338355335232}
-  - component: {fileID: 114737892841532576}
+  - component: {fileID: 114681367711122780}
   m_Layer: 9
   m_Name: StandardKart
   m_TagString: Kart
@@ -1027,7 +1027,7 @@ MonoBehaviour:
   DustTrails:
   - {fileID: 198416033647754212}
   - {fileID: 198629714582053734}
---- !u!114 &114737892841532576
+--- !u!114 &114681367711122780
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1035,7 +1035,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1998018597130342}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b75ee09729d7b4faf8a709fff30dace5, type: 3}
+  m_Script: {fileID: 11500000, guid: 30c74d236df5040fdba1060742c0d995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _posLerpRate: 15

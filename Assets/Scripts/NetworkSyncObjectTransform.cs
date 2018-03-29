@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class NetworkSyncTransform : NetworkBehaviour
+public class NetworkSyncObjectTransform : NetworkBehaviour
 {
     [SerializeField]
     protected float _posLerpRate = 15;
@@ -26,7 +26,7 @@ public class NetworkSyncTransform : NetworkBehaviour
 
     public virtual void Update()
     {
-        if (isLocalPlayer)
+        if (hasAuthority)
             return;
         
         InterpolatePosition();
@@ -35,14 +35,14 @@ public class NetworkSyncTransform : NetworkBehaviour
 
     public virtual void FixedUpdate()
     {
-        if (!isLocalPlayer)
+        if (!hasAuthority)
             return;
 
         var posChanged = IsPositionChanged();
 
         if (posChanged)
         {
-            CmdSendPosition(transform.position);
+            Cmd_SendPosition(transform.position);
             _lastPosition = transform.position;
         }
 
@@ -50,14 +50,17 @@ public class NetworkSyncTransform : NetworkBehaviour
 
         if (rotChanged)
         {
-            CmdSendRotation(transform.localEulerAngles);
+            Cmd_SendRotation(transform.localEulerAngles);
             _lastRotation = transform.localEulerAngles;
         }
     }
 
     public void InterpolatePosition()
     {
-        transform.position = Vector3.Lerp(transform.position, _lastPosition, Time.deltaTime * _posLerpRate);
+        if (_lastPosition != Vector3.zero)
+        {
+            transform.position = Vector3.Lerp(transform.position, _lastPosition, Time.deltaTime * _posLerpRate);
+        }
     }
 
     protected void InterpolateRotation()
@@ -66,13 +69,13 @@ public class NetworkSyncTransform : NetworkBehaviour
     }
 
     [Command(channel = Channels.DefaultUnreliable)]
-    public void CmdSendPosition(Vector3 pos)
+    public void Cmd_SendPosition(Vector3 pos)
     {
         _lastPosition = pos;
     }
 
     [Command(channel = Channels.DefaultUnreliable)]
-    protected void CmdSendRotation(Vector3 rot)
+    protected void Cmd_SendRotation(Vector3 rot)
     {
         _lastRotation = rot;
     }

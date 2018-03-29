@@ -12,7 +12,6 @@ public class Projectile : Item
     /// The speed.
     /// </summary>
     public float Speed;
-
     private Rigidbody rb;
     private Collider col;
 
@@ -20,18 +19,21 @@ public class Projectile : Item
     {
         rb = GetComponent<Rigidbody>();
     }
-
+        
     public override void Activate()
     {
+        shoot();
+    }
         
+    public override void Fire()
+    {
+        shoot();   
     }
 
-    [Command(channel = Channels.DefaultUnreliable)]
-    public override void CmdFire()
+    private void shoot()
     {
         transform.position = Owner.transform.position + (Owner.transform.forward * 2);
         transform.SetParent(null);
-        //transform.rotation = Owner.transform.rotation;
 
         rb = GetComponent<Rigidbody>();
         if (rb != null)

@@ -107,7 +107,7 @@ public class Kart : MovingObject
         // fire!
         if (Input.GetKeyDown(KeyCode.E))
         {
-            CmdFire();
+            Fire();
         }
 
         vInput = Input.GetAxis("Vertical");
@@ -327,35 +327,15 @@ public class Kart : MovingObject
         }
     }
 
-    [Command]
-    void CmdFire()
+    void Fire()
     {
-//        if (CurrentItem != null)
-//        {
-//            CurrentItem.CmdFire();   
-//        }
-
-        GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.PROJECTILE);
-        if (itemPrefab != null)
+        if (CurrentItem == null)
         {
-            GameObject itemObj = Instantiate(itemPrefab) as GameObject;
-            if (itemObj != null)
-            {
-                itemObj.transform.position = transform.position + (transform.forward * 2);
-                Rigidbody itemRB = itemObj.GetComponent<Rigidbody>();
-                if (itemRB != null)
-                {
-                    itemRB.isKinematic = false;
-                    itemRB.velocity = transform.forward * 60f;
-                }
-
-                Collider itemCol = itemObj.GetComponent<Collider>();
-                if (itemCol != null)
-                {
-                    itemCol.isTrigger = false;
-                }
-                NetworkServer.Spawn(itemObj);
-            }           
+            Cmd_GetItem();
+        }
+        else if (CurrentItem != null)
+        {
+            CurrentItem.Fire();
         }
     }
 
@@ -370,31 +350,33 @@ public class Kart : MovingObject
 
     void OnTriggerEnter(Collider other)
     {
-        /*
         if (other.gameObject.tag == "Item")
         {
             if (CurrentItem == null)
             {
-                //GameObject itemPrefab = Resources.Load<GameObject>("Items/ProjectileSet");
-                GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.SINGLE_PROJECTILE);
-                if (itemPrefab != null)
-                {
-                    GameObject itemObj = Instantiate(itemPrefab) as GameObject;
-                    if (itemObj != null)
-                    {                    
-                        itemObj.transform.SetParent(ItemOrigin);
-                        itemObj.transform.localPosition = Vector3.zero;
-                        Item item = itemObj.GetComponent<Item>();
-                        if (item != null)
-                        {
-                            CurrentItem = item;
-                            CurrentItem.Owner = this;
-                            CurrentItem.Activate();
-                        }
-                    }
-                }
+                Cmd_GetItem();
             }
         }
-        */
+    }
+
+    [Command]
+    public void Cmd_GetItem()
+    {
+        GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.SINGLE_PROJECTILE);
+        if (itemPrefab != null)
+        {
+            GameObject itemObj = Instantiate(itemPrefab, ItemOrigin) as GameObject;
+            if (itemObj != null)
+            {
+                NetworkServer.SpawnWithClientAuthority(itemObj, connectionToClient);
+                Item item = itemObj.GetComponent<Item>();
+                if (item != null)
+                {
+                    CurrentItem = item;
+                    CurrentItem.Owner = this;
+                    CurrentItem.Activate();
+                }
+            }
+        }            
     }
 }

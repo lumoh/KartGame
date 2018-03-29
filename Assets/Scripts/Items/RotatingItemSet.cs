@@ -59,8 +59,7 @@ public class RotatingItemSet : Item
     /// <summary>
     /// fire one of the items and remove it from list
     /// </summary>
-    [Command(channel = Channels.DefaultUnreliable)]
-    public override void CmdFire()
+    public override void Fire()
     {
         if (Items != null && Items.Count > 0)
         {
@@ -69,7 +68,7 @@ public class RotatingItemSet : Item
             Items.RemoveAt(index);
             if (item != null)
             {                
-                item.CmdFire();
+                item.Fire();
             }
 
             if (Items.Count == 0)

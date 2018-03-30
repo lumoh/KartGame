@@ -362,21 +362,23 @@ public class Kart : MovingObject
     [Command]
     public void Cmd_GetItem()
     {
-        GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.SINGLE_PROJECTILE);
+        GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.PROJECTILE);
         if (itemPrefab != null)
         {
             GameObject itemObj = Instantiate(itemPrefab, ItemOrigin) as GameObject;
             if (itemObj != null)
             {
-                NetworkServer.SpawnWithClientAuthority(itemObj, connectionToClient);
+                NetworkServer.Spawn(itemObj);
                 Item item = itemObj.GetComponent<Item>();
                 if (item != null)
                 {
-                    CurrentItem = item;
-                    CurrentItem.Owner = this;
-                    CurrentItem.Activate();
+                    item.Owner = this;
+                    item.Fire();
+                    //CurrentItem = item;
+                    //CurrentItem.Owner = this;
+                    //CurrentItem.Activate();
                 }
             }
-        }            
+        }
     }
 }

@@ -19,14 +19,13 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4110958519582222}
-  - component: {fileID: 114106209888522602}
   - component: {fileID: 54221951420513250}
   - component: {fileID: 135020798270561878}
   - component: {fileID: 33261788886373092}
   - component: {fileID: 23548609346790426}
   - component: {fileID: 114442214697680118}
-  - component: {fileID: 114902411232758370}
   - component: {fileID: 114877640729029134}
+  - component: {fileID: 114957841655904166}
   m_Layer: 10
   m_Name: Projectile
   m_TagString: Untagged
@@ -103,23 +102,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &114106209888522602
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1014223635180182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44c277c88f1d64150b102009624befa5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HeightOffGround: 0.3
-  GroundedDrag: 0
-  GroundedAngularDrag: 0
-  AirDrag: 0.1
-  AirAngularDrag: 25
-  GravityForce: 100
 --- !u!114 &114442214697680118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,7 +133,7 @@ MonoBehaviour:
     i14: 238
     i15: 204
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 1
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114877640729029134
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -165,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Owner: {fileID: 0}
   Speed: 60
---- !u!114 &114902411232758370
+--- !u!114 &114957841655904166
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

@@ -27,7 +27,8 @@ public class SingleItemSet : Item
         GameObject itemObj = Instantiate(ItemPrefab, startPos, Quaternion.identity, transform) as GameObject;
         if (itemObj != null)
         {
-            NetworkServer.SpawnWithClientAuthority(itemObj, Owner.connectionToClient);
+            //NetworkServer.SpawnWithClientAuthority(itemObj, Owner.connectionToClient);
+            NetworkServer.Spawn(itemObj);
             Item = itemObj.GetComponent<Item>();
             Item.Owner = Owner;
         }

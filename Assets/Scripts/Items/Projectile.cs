@@ -12,40 +12,48 @@ public class Projectile : Item
     /// The speed.
     /// </summary>
     public float Speed;
+
     private Rigidbody rb;
     private Collider col;
 
-    void Start()
+    public override void OnStartClient()
     {
         rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
     }
-        
+
     public override void Activate()
     {
-        shoot();
+        if (Owner != null)
+        {
+            transform.SetParent(Owner.ItemOrigin);
+            transform.localPosition = new Vector3(0, 0, -1.5f);
+        }
     }
         
     public override void Fire()
     {
-        shoot();   
+        shoot();
     }
 
     private void shoot()
     {
-        transform.position = Owner.transform.position + (Owner.transform.forward * 2);
         transform.SetParent(null);
-
-        rb = GetComponent<Rigidbody>();
+        transform.position = parent.position + (parent.forward * 2);
         if (rb != null)
         {
             rb.isKinematic = false;
-            rb.velocity = Owner.transform.forward * Speed;
+            rb.velocity = parent.forward * Speed;
         }
 
-        col = GetComponent<Collider>();
         if (col != null)
         {
             col.isTrigger = false;
+        }
+
+        if (Owner != null)
+        {
+            Owner.CurrentItem = null;
         }
     }
 }

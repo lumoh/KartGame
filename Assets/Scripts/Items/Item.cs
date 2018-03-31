@@ -12,6 +12,20 @@ public class Item : NetworkBehaviour
     /// the owner of the item
     /// </summary>
     [HideInInspector] public Kart Owner;
+    protected Transform parent;
+    protected NetworkIdentity ni;
+
+    public override void OnStartAuthority()
+    {
+        parent = ClientScene.readyConnection.playerControllers[0].gameObject.transform;
+        ni = parent.GetComponent<NetworkIdentity>();
+        Owner = parent.GetComponent<Kart>();
+        if (Owner != null)
+        {
+            Owner.CurrentItem = this;
+        }
+        Activate();
+    }
 
     /// <summary>
     /// Activate this instance.

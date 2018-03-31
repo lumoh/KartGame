@@ -19,9 +19,16 @@ public class NetworkSyncObjectTransform : NetworkBehaviour
     [SyncVar]
     protected Vector3 _lastRotation;
 
+    private bool givenAuthority = false;
+
     public virtual void Start()
     {
         
+    }
+
+    void OnStartAuthority()
+    {
+        givenAuthority = true;
     }
 
     public virtual void Update()

@@ -23,14 +23,16 @@ public class SingleItemSet : Item
     /// </summary>
     public override void Activate()
     {
-        Vector3 startPos = Owner.transform.position + (-Owner.transform.forward * 2f);
-        GameObject itemObj = Instantiate(ItemPrefab, startPos, Quaternion.identity, transform) as GameObject;
+        Cmd_Activate();
+    }
+
+    [Command]
+    public void Cmd_Activate()
+    {
+        GameObject itemObj = Instantiate(ItemPrefab, new Vector3(0, 0, -2f), Quaternion.identity, transform) as GameObject;
         if (itemObj != null)
         {
-            //NetworkServer.SpawnWithClientAuthority(itemObj, Owner.connectionToClient);
-            NetworkServer.Spawn(itemObj);
-            Item = itemObj.GetComponent<Item>();
-            Item.Owner = Owner;
+            NetworkServer.SpawnWithClientAuthority(itemObj, base.connectionToClient);
         }
     }
 

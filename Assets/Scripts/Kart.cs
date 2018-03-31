@@ -48,6 +48,9 @@ public class Kart : MovingObject
     private float hInput;
     private float jumpInput;
 
+    [HideInInspector]
+    public NetworkIdentity NI;
+
     public override void Start()
     {
         base.Start();
@@ -70,11 +73,16 @@ public class Kart : MovingObject
                     if (UI != null)
                     {
                         UI.gameObject.SetActive(true);
-                    }
+                    }                        
                 }
             }
         }
-    }        
+
+        if (isLocalPlayer)
+        {
+            NI = GetComponent<NetworkIdentity>();
+        }
+    }
 
     public override void Update()
     {
@@ -357,7 +365,7 @@ public class Kart : MovingObject
                 Cmd_GetItem();
             }
         }
-    }
+    }        
 
     [Command]
     public void Cmd_GetItem()
@@ -365,19 +373,12 @@ public class Kart : MovingObject
         GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.PROJECTILE);
         if (itemPrefab != null)
         {
+            //Vector3 pos = transform.position + (transform.forward * 2f);
+            //GameObject itemObj = Instantiate(itemPrefab, pos, Quaternion.identity) as GameObject;
             GameObject itemObj = Instantiate(itemPrefab, ItemOrigin) as GameObject;
             if (itemObj != null)
             {
-                NetworkServer.Spawn(itemObj);
-                Item item = itemObj.GetComponent<Item>();
-                if (item != null)
-                {
-                    item.Owner = this;
-                    item.Fire();
-                    //CurrentItem = item;
-                    //CurrentItem.Owner = this;
-                    //CurrentItem.Activate();
-                }
+                NetworkServer.SpawnWithClientAuthority(itemObj, base.connectionToClient);
             }
         }
     }

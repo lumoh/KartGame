@@ -9,6 +9,10 @@ public class KartUI : MonoBehaviour
     public Text TimeText;
     public Text SpeedText;
 
+    public BetterButton GoBtn;
+    public BetterButton FireBtn;
+    public Slider WheelSlider;
+
     void Start()
     {
         PlaceText.text = "1st";

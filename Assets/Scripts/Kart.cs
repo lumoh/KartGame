@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
 /// <summary>
@@ -82,6 +83,20 @@ public class Kart : MovingObject
         {
             NI = GetComponent<NetworkIdentity>();
         }
+
+        initGUIControls();
+    }
+
+    private void initGUIControls()
+    {
+        UI.GoBtn.onButtonDown.AddListener(()=>
+        {
+            vInput = 1.0f; 
+        });
+        UI.GoBtn.onButtonUp.AddListener(() =>
+        {
+            vInput = 0f; 
+        });
     }
 
     public override void Update()
@@ -112,15 +127,21 @@ public class Kart : MovingObject
 
     void input()
     {
-        // fire!
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Fire();
-        }
+        float sliderVal = UI.WheelSlider.value;
+        hInput = (sliderVal - 0.5f) * 2f;
 
-        vInput = Input.GetAxis("Vertical");
-        hInput = Input.GetAxis("Horizontal");
-        jumpInput = Input.GetAxis("Jump");
+// EDITOR CONTROLS
+//        if (Application.isEditor)
+//        {
+//            // fire!
+//            if (Input.GetKeyDown(KeyCode.E))
+//            {
+//                Fire();
+//            }
+//            vInput = Input.GetAxis("Vertical");
+//            hInput = Input.GetAxis("Horizontal");
+//            jumpInput = Input.GetAxis("Jump");
+//        }
 
         if (vInput > 0)
         {

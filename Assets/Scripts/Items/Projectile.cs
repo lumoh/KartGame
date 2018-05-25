@@ -25,8 +25,7 @@ public class Projectile : Item
     public override void Activate()
     {
         if (Owner != null)
-        {
-            transform.SetParent(Owner.ItemOrigin);
+        {            
             transform.localPosition = new Vector3(0, 0, -1.5f);
         }
     }

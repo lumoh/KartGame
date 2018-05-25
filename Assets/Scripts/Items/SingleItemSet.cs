@@ -29,7 +29,7 @@ public class SingleItemSet : Item
     [Command]
     public void Cmd_Activate()
     {
-        GameObject itemObj = Instantiate(ItemPrefab, new Vector3(0, 0, -2f), Quaternion.identity, transform) as GameObject;
+        GameObject itemObj = Instantiate(ItemPrefab, transform) as GameObject;
         if (itemObj != null)
         {
             NetworkServer.SpawnWithClientAuthority(itemObj, base.connectionToClient);

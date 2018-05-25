@@ -22,6 +22,7 @@ public class Item : NetworkBehaviour
         Owner = parent.GetComponent<Kart>();
         if (Owner != null)
         {
+            transform.SetParent(Owner.ItemOrigin);
             Owner.CurrentItem = this;
         }
         Activate();

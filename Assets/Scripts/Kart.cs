@@ -373,8 +373,6 @@ public class Kart : MovingObject
         GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.PROJECTILE);
         if (itemPrefab != null)
         {
-            //Vector3 pos = transform.position + (transform.forward * 2f);
-            //GameObject itemObj = Instantiate(itemPrefab, pos, Quaternion.identity) as GameObject;
             GameObject itemObj = Instantiate(itemPrefab, ItemOrigin) as GameObject;
             if (itemObj != null)
             {

@@ -16,6 +16,13 @@ public class KartUI : MonoBehaviour
     void Start()
     {
         PlaceText.text = "1st";
+
+        if (Application.isEditor)
+        {
+            Util.SetActive(GoBtn, false);
+            Util.SetActive(FireBtn, false);
+            Util.SetActive(WheelSlider, false);
+        }
     }
 
     void Update()

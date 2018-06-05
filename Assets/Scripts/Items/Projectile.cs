@@ -24,10 +24,33 @@ public class Projectile : Item
 
     public override void Activate()
     {
-        if (Owner != null)
-        {            
-            transform.localPosition = new Vector3(0, 0, -1.5f);
-        }
+//        if (Owner != null)
+//        {            
+//            transform.localPosition = new Vector3(0, 0, -1.5f);
+//        }
+
+        shoot();
+    }
+
+//    void OnCollisionEnter(Collision other)
+//    {
+//        if (other.gameObject.tag == "Kart")
+//        {
+//            Destroy(gameObject);
+//            Cmd_Destroy();
+//
+//            Kart kart = other.gameObject.GetComponent<Kart>();
+//            if (kart != null)
+//            {
+//                kart.Hit();
+//            }
+//        }
+//    }
+
+    [Command]
+    public void Cmd_Destroy()
+    {
+        NetworkServer.Destroy(gameObject);
     }
         
     public override void Fire()

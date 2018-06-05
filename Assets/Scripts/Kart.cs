@@ -24,6 +24,7 @@ public class Kart : MovingObject
     [Header("Kart Objects")]
     public GameObject KartCamPrefab;
     public KartUI UI;
+    public Animator Anim;
 
     [HideInInspector]
     public FollowCamera FollowCam;
@@ -44,6 +45,7 @@ public class Kart : MovingObject
     private bool isSliding;
     private bool slidingRight;
     private bool slidingLeft;
+    private bool isStunned;
 
     private float vInput;
     private float hInput;
@@ -56,6 +58,7 @@ public class Kart : MovingObject
     {
         base.Start();
 
+        Anim = GetComponentInChildren<Animator>();
         layerMask = 1 << LayerMask.NameToLayer("Kart");
         layerMask = ~layerMask;
 
@@ -89,19 +92,31 @@ public class Kart : MovingObject
 
     private void initGUIControls()
     {
-        UI.GoBtn.onButtonDown.AddListener(()=>
+        if (!Application.isEditor)
         {
-            vInput = 1.0f; 
-        });
-        UI.GoBtn.onButtonUp.AddListener(() =>
-        {
-            vInput = 0f; 
-        });
+            UI.GoBtn.onButtonDown.AddListener(() =>
+            {
+                vInput = 1.0f; 
+            });
+            UI.GoBtn.onButtonUp.AddListener(() =>
+            {
+                vInput = 0f; 
+            });
+            UI.FireBtn.onButtonDown.AddListener(() =>
+            {
+                Cmd_Fire(); 
+            });
+        }
     }
 
     public override void Update()
     {
         if (!isLocalPlayer)
+        {
+            return;
+        }            
+
+        if (isStunned)
         {
             return;
         }
@@ -117,6 +132,11 @@ public class Kart : MovingObject
             return;
         }
 
+        if (isStunned)
+        {
+            return;
+        }
+
         setDirection();
         movement();
         turning();
@@ -127,21 +147,26 @@ public class Kart : MovingObject
 
     void input()
     {
-        float sliderVal = UI.WheelSlider.value;
-        hInput = (sliderVal - 0.5f) * 2f;
-
-// EDITOR CONTROLS
-//        if (Application.isEditor)
-//        {
-//            // fire!
-//            if (Input.GetKeyDown(KeyCode.E))
-//            {
-//                Fire();
-//            }
-//            vInput = Input.GetAxis("Vertical");
-//            hInput = Input.GetAxis("Horizontal");
-//            jumpInput = Input.GetAxis("Jump");
-//        }
+        if (Application.isEditor)
+        {
+            // fire!
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Cmd_Fire();
+            }
+            vInput = Input.GetAxis("Vertical");
+            hInput = Input.GetAxis("Horizontal");
+            jumpInput = Input.GetAxis("Jump");
+            if (Input.GetButtonDown("Jump"))
+            {
+                Anim.Play("Hop");
+            }
+        }
+        else
+        {
+            float sliderVal = UI.WheelSlider.value;
+            hInput = (sliderVal - 0.5f) * 2f;
+        }
 
         if (vInput > 0)
         {
@@ -356,18 +381,6 @@ public class Kart : MovingObject
         }
     }
 
-    void Fire()
-    {
-        if (CurrentItem == null)
-        {
-            Cmd_GetItem();
-        }
-        else if (CurrentItem != null)
-        {
-            CurrentItem.Fire();
-        }
-    }
-
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Track")
@@ -375,6 +388,36 @@ public class Kart : MovingObject
             vInput = 0;
             thrustRatio = 0;
         }
+            
+        if (other.gameObject.tag == "Projectile")
+        {
+            vInput = 0;
+            thrustRatio = 0;
+            thrust = 0;
+            body.velocity = Vector3.zero;
+            isStunned = true;
+
+            Cmd_Wipeout();
+
+            StartCoroutine("stunned");
+        }
+    }
+
+//    public void Hit()
+//    {
+//        Cmd_Wipeout();
+//    }
+
+    [Command]
+    private void Cmd_Wipeout()
+    {
+        Anim.Play("Wipeout");
+    }
+
+    IEnumerator stunned()
+    {
+        yield return new WaitForSeconds(2f);
+        isStunned = false;
     }
 
     void OnTriggerEnter(Collider other)
@@ -383,18 +426,19 @@ public class Kart : MovingObject
         {
             if (CurrentItem == null)
             {
-                Cmd_GetItem();
+                //Cmd_GetItem();
             }
         }
-    }        
+    }
 
     [Command]
-    public void Cmd_GetItem()
+    public void Cmd_Fire()
     {
         GameObject itemPrefab = Resources.Load<GameObject>(ItemType.PATH + ItemType.PROJECTILE);
         if (itemPrefab != null)
         {
-            GameObject itemObj = Instantiate(itemPrefab, ItemOrigin) as GameObject;
+            Vector3 pos = ItemOrigin.position + (transform.forward * 3f);
+            GameObject itemObj = Instantiate(itemPrefab, pos, Quaternion.identity, ItemOrigin) as GameObject;
             if (itemObj != null)
             {
                 NetworkServer.SpawnWithClientAuthority(itemObj, base.connectionToClient);

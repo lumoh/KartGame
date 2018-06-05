@@ -7,6 +7,7 @@ TagManager:
   - Kart
   - Item
   - Track
+  - Projectile
   layers:
   - Default
   - TransparentFX
